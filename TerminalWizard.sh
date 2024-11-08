@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "System Setup Wizard (∩｀-´)⊃━☆ﾟ.*･"
+echo "Terminal Wizard (∩｀-´)⊃━☆ﾟ.*･"
 
 # Get the script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
