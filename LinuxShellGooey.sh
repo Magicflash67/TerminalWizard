@@ -245,16 +245,19 @@ SelfDestruct() {
 {what were you expecting, an explosion?}
 "
 
-    # Schedule the deletion of the script file after the script exits
-    echo "rm -f $SCRIPT_DIR/$(basename "$0")" | at now
+    # Delay before deleting the script file to allow the process to complete
+    sleep 2
 
+    # Deleting the script file after a brief delay
+    rm -f "$SCRIPT_DIR/$(basename "$0")"
+    
     # Provide feedback
     echo "Self-destruct complete. Log files located at:"
     echo "$LOG_FILE"
     echo "$WATCHER_LOG_FILE"
-    # Optionally, exit after the self-destruct sequence
     exit
 }
+
 
 
 # Function to toggle sudo-only mode
