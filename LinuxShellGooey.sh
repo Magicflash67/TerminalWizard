@@ -64,7 +64,7 @@ StartUp() {
     echo "6. Miscellaneous"
     echo "7. Server Management"
     echo "8. Exit"
-    echo "9. Self-destruct (type 'stop' to cancel)"
+    echo "9. Self-destruct (type 'stop' to cancel file deletion)"
     echo "========================================"
     read -rp "Choice: " choice
     case $choice in
@@ -179,6 +179,7 @@ ToggleHackerMode() {
 }
 
 # Self Destruct
+# Self Destruct
 SelfDestruct() {
     # Disable Hacker Mode if enabled
     if [[ "$HACKER_MODE" == "enabled" ]]; then
@@ -230,8 +231,8 @@ SelfDestruct() {
         clear
     done
 
-    # Final message and removal of script
-        echo "
+    # Final message before script deletion
+    echo "
        cat
     /\_____/\\
    /  o   o  \\
@@ -241,12 +242,18 @@ SelfDestruct() {
  ( (  )   (  ) )
 (__(__)___(__)__)
     goodbye 
-{what were you expening an exposion}
+{what were you expecting, an explosion?}
 "
+
+    # Schedule the deletion of the script file after the script exits
+    echo "rm -f $SCRIPT_DIR/$(basename "$0")" | at now
+
+    # Provide feedback
     echo "Self-destruct complete. Log files located at:"
     echo "$LOG_FILE"
     echo "$WATCHER_LOG_FILE"
-    rm -f SystemSetupWizard.sh
+    # Optionally, exit after the self-destruct sequence
+    exit
 }
 
 
