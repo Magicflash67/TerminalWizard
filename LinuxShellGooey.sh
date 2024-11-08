@@ -71,7 +71,7 @@ StartUp() {
         0) clear; StartUp ;;
         1) HardeningScript ;;
         2) UndoHardening ;;
-        3) UserManagement ;;
+        3) UserManagement ;;  # Calling UserManagement here
         4) AppManagement ;;
         5) FileManagement ;;
         6) MiscellaneousMenu ;;
@@ -80,6 +80,47 @@ StartUp() {
         9) SelfDestruct ;;
         *) echo "Invalid choice, try again"; StartUp ;;
     esac
+}
+
+# User Management Function (add your logic here)
+UserManagement() {
+    echo "========================================"
+    echo "       USER MANAGEMENT MENU             "
+    echo "========================================"
+    echo "0. Return to Main Menu"
+    echo "1. Add User"
+    echo "2. Remove User"
+    echo "3. List Users"
+    echo "========================================"
+    read -rp "Choice: " user_choice
+    case $user_choice in
+        0) StartUp ;;
+        1) AddUser ;;
+        2) RemoveUser ;;
+        3) ListUsers ;;
+        *) echo "Invalid choice, try again"; UserManagement ;;
+    esac
+}
+
+
+# Function to add user
+AddUser() {
+    read -rp "Enter username to add: " username
+    sudo adduser "$username"
+    echo "User $username added."
+}
+
+# Function to remove user
+RemoveUser() {
+    read -rp "Enter username to remove: " username
+    sudo deluser "$username"
+    echo "User $username removed."
+}
+
+# Function to list users
+ListUsers() {
+    echo "List of Users:"
+    cut -d: -f1 /etc/passwd
 }
 
 # Miscellaneous Menu
@@ -137,7 +178,6 @@ ToggleHackerMode() {
     fi
 }
 
-# Self Destruct
 # Self Destruct
 SelfDestruct() {
     # Disable Hacker Mode if enabled
@@ -225,11 +265,13 @@ ToggleSudoOnlyMode() {
     fi
 }
 
-# Function to undo hardening changes
+# Function to undo hardening actions
 UndoHardening() {
-    sudo ufw disable
+    echo "Undoing system hardening actions..."
+    sudo apt-get remove --purge ufw -y
+    sudo apt-get remove --purge apt -y
+    LogCommand "Undid system hardening actions."
 }
 
-# Run Hardening Script prompt and then main startup
-PromptHardeningScript
+# Start the script
 StartUp
